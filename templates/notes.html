@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>
+    Notes de {{ etudiant.nom }} {{ etudiant.prenom }}
+</h1>
+
+<hr>
+
+<a href="/ajouter_note/{{ etudiant.id }}"
+   class="btn btn-success mb-3">
+
+    Ajouter une note
+
+</a>
+
+<a
+    href="/bulletin/{{ etudiant.id }}"
+    class="btn btn-danger mb-3">
+
+    📄 Télécharger le bulletin PDF
+
+</a>
+
+<table class="table table-striped">
+
+    <thead class="table-dark">
+
+        <tr>
+
+             <th>ID</th>
+             <th>Matière</th>
+             <th>Note</th>
+             <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for note in notes %}
+
+        <tr>
+
+           <td>{{ note.id }}</td>
+           <td>{{ note.matiere }}</td>
+           <td>{{ note.note }}</td>
+
+        <td>
+
+            <a href="/modifier_note/{{ note.id }}"
+               class="btn btn-warning btn-sm">
+
+                 Modifier
+
+            </a>
+
+            <form
+                method="POST"
+                action="/supprimer_note/{{ note.id }}/{{ etudiant.id }}"
+                class="d-inline"
+                onsubmit="return confirm('Supprimer cette note ?')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-danger btn-sm">
+                    Supprimer
+                </button>
+            </form>
+
+
+        </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% if moyenne %}
+
+    <div class="alert alert-info">
+
+        <h5>
+
+           Moyenne :
+           {{ "%.2f"|format(moyenne) }}
+
+        </h5>
+
+    {% if mention == "Très Bien" %}
+
+        <span class="badge bg-success fs-5">
+           {{ mention }}
+        </span>
+
+    {% elif mention == "Bien" %}
+
+        <span class="badge bg-primary fs-5">
+           {{ mention }}
+        </span>
+
+    {% elif mention == "Assez Bien" %}
+
+        <span class="badge bg-info fs-5">
+          {{ mention }}
+        </span>
+
+    {% elif mention == "Passable" %}
+
+        <span class="badge bg-warning text-dark fs-5">
+           {{ mention }}
+        </span>
+
+    {% else %}
+
+        <span class="badge bg-danger fs-5">
+          {{ mention }}
+        </span> 
+
+    {% endif %}
+
+    </div>
+
+{% endif %}
+
+{% endblock %}

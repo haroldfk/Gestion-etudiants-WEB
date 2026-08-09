@@ -1,0 +1,105 @@
+{% extends "base.html" if session.get("role") == "ADMIN" else "base_enseignant.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">
+
+    📅 Déclarer une absence
+
+</h2>
+
+<div class="card shadow-lg">
+
+    <div class="card-body">
+
+        <p class="text-muted">
+
+            L'enseignant enregistre uniquement l'absence.
+            L'étudiant pourra ensuite envoyer un justificatif depuis son espace personnel.
+
+        </p>
+
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Date de l'absence
+
+                </label>
+
+                <input
+                    type="date"
+                    name="date_absence"
+                    class="form-control"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Motif
+
+                </label>
+
+                <textarea
+                    name="motif"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Exemple : Absence au cours de Python"
+                    required></textarea>
+
+            </div>
+
+            <div class="alert alert-info">
+
+                <strong>Information :</strong><br>
+
+                Après l'enregistrement, cette absence sera automatiquement
+                marquée <strong>"En attente"</strong>.
+                L'étudiant pourra envoyer un justificatif et
+                l'administration décidera ensuite de la valider ou de la refuser.
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-success">
+
+                💾 Enregistrer l'absence
+
+            </button>
+
+            {% if session.get("role") == "ADMIN" %}
+
+                <a
+                    href="/absences/{{ etudiant_id }}"
+                    class="btn btn-secondary">
+
+                    ↩ Retour
+
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{{ url_for('enseignant.mes_etudiants') }}"
+                    class="btn btn-secondary">
+
+                    ↩ Retour
+
+                </a>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

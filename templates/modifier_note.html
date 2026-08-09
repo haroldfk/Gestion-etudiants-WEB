@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Modifier une note</h2>
+
+<form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="mb-3">
+
+        <label class="form-label">
+
+            Matière
+
+        </label>
+
+        <input
+            type="text"
+            name="matiere"
+            value="{{ note.matiere }}"
+            class="form-control"
+            required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+
+            Note
+
+        </label>
+
+        <input
+            type="number"
+            step="0.01"
+            min="0"
+            max="20"
+            name="note"
+            value="{{ note.note }}"
+            class="form-control"
+            required>
+
+    </div>
+
+    <button
+        type="submit"
+        class="btn btn-success">
+
+        Modifier
+
+    </button>
+
+</form>
+
+{% endblock %}

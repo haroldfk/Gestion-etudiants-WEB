@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+            👨‍🎓 Créer un compte étudiant
+        </h2>
+
+        <p class="text-muted">
+            Créez les identifiants de connexion
+            d'un étudiant déjà enregistré.
+        </p>
+
+    </div>
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-body p-4">
+
+            {% if etudiants %}
+
+                <form method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                    <!-- Sélection de l'étudiant -->
+
+                    <div class="mb-4">
+
+                        <label
+                            for="etudiant_id"
+                            class="form-label fw-bold">
+
+                            Étudiant
+
+                        </label>
+
+                        <select
+                            id="etudiant_id"
+                            name="etudiant_id"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                -- Sélectionner un étudiant --
+                            </option>
+
+                            {% for etudiant in etudiants %}
+
+                                <option value="{{ etudiant.id }}">
+
+                                    {{ etudiant.nom }}
+                                    {{ etudiant.prenom }}
+                                    -
+                                    {{ etudiant.filiere }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                        <div class="form-text">
+
+                            Seuls les étudiants sans compte
+                            apparaissent dans cette liste.
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Email de connexion -->
+
+                    <div class="mb-4">
+
+                        <label
+                            for="email"
+                            class="form-label fw-bold">
+
+                            Email de connexion
+
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="exemple@ecole.com"
+                            required>
+
+                    </div>
+
+
+                    <!-- Mot de passe temporaire -->
+
+                    <div class="mb-4">
+
+                        <label
+                            for="mot_de_passe"
+                            class="form-label fw-bold">
+
+                            Mot de passe temporaire
+
+                        </label>
+
+                        <input
+                            type="password"
+                            id="mot_de_passe"
+                            name="mot_de_passe"
+                            class="form-control"
+                            minlength="8"
+                            required>
+
+                        <div class="form-text">
+
+                            Minimum 8 caractères.
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Information -->
+
+                    <div class="alert alert-info">
+
+                        <strong>
+                            ℹ️ Information
+                        </strong>
+
+                        <br>
+
+                        Le compte sera automatiquement créé
+                        avec le rôle
+
+                        <strong>
+                            ETUDIANT
+                        </strong>.
+
+                    </div>
+
+
+                    <!-- Boutons -->
+
+                    <button
+                        type="submit"
+                        class="btn btn-success">
+
+                        👤 Créer le compte
+
+                    </button>
+
+                    <a
+                        href="/dashboard"
+                        class="btn btn-secondary">
+
+                        ↩ Retour
+
+                    </a>
+
+                </form>
+
+            {% else %}
+
+                <div class="alert alert-info">
+
+                    Aucun étudiant disponible.
+
+                    <br>
+
+                    Tous les étudiants enregistrés
+                    possèdent déjà un compte.
+
+                </div>
+
+                <a
+                    href="/dashboard"
+                    class="btn btn-secondary">
+
+                    ↩ Retour au dashboard
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endblock %}

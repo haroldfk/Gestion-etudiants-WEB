@@ -1,0 +1,217 @@
+{% extends "base_enseignant.html" %}
+
+{% block content %}
+
+<div class="mb-4">
+
+    <h2 class="fw-bold">
+        👨‍🏫 Mon espace enseignant
+    </h2>
+
+    <p class="text-muted">
+        Bienvenue {{ enseignant.prenom }} {{ enseignant.nom }}
+    </p>
+
+</div>
+
+<div class="row g-4 mb-5">
+
+    <div class="col-md-6">
+
+        <div class="card shadow border-0 h-100">
+
+            <div class="card-body text-center p-4">
+
+                <h5 class="text-muted">
+                    🎓 Spécialité
+                </h5>
+
+                <h3 class="fw-bold text-primary">
+
+                    {% if enseignant.specialite %}
+
+                        {{ enseignant.specialite }}
+
+                    {% else %}
+
+                        Non renseignée
+
+                    {% endif %}
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card shadow border-0 h-100">
+
+            <div class="card-body text-center p-4">
+
+                <h5 class="text-muted">
+                    📚 Matières enseignées
+                </h5>
+
+                <h3 class="fw-bold text-success">
+                    {{ nombre_matieres }}
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow border-0 mb-5">
+
+    <div class="card-body p-4">
+
+        <h4 class="mb-4">
+            📚 Mes matières
+        </h4>
+
+        {% if matieres %}
+
+            <div class="row g-3">
+
+                {% for matiere in matieres %}
+
+                    <div class="col-md-4">
+
+                        <div class="card h-100 border-0 bg-light">
+
+                            <div class="card-body">
+
+                                <h5 class="fw-bold">
+                                    📖 {{ matiere.nom }}
+                                </h5>
+
+                                <p class="text-muted">
+                                    Gérer les activités académiques
+                                    de cette matière.
+                                </p>
+
+                                <div class="d-grid gap-2">
+
+                                    <a href="{{ url_for('enseignant.saisir_notes_enseignant', matiere_id=matiere.id) }}"
+                                       class="btn btn-primary btn-sm">
+
+                                        📝 Saisir des notes
+
+                                    </a>
+
+                                    <a
+                                        href="{{ url_for('enseignant.mes_etudiants') }}"
+                                        class="btn btn-warning btn-sm">
+
+                                        📅 Marquer une absence
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="alert alert-warning">
+
+                Aucune matière ne vous a encore été attribuée.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<div class="card shadow border-0">
+
+    <div class="card-body p-4">
+
+        <h4 class="mb-4">
+            👤 Mes informations
+        </h4>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+
+                <strong>
+                    Nom
+                </strong>
+
+                <p class="text-muted">
+                    {{ enseignant.nom }}
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <strong>
+                    Prénom
+                </strong>
+
+                <p class="text-muted">
+                    {{ enseignant.prenom }}
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <strong>
+                    Email
+                </strong>
+
+                <p class="text-muted">
+                    {{ enseignant.email }}
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <strong>
+                    Téléphone
+                </strong>
+
+                <p class="text-muted">
+
+                    {% if enseignant.telephone %}
+
+                        {{ enseignant.telephone }}
+
+                    {% else %}
+
+                        Non renseigné
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

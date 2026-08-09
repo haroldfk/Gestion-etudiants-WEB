@@ -1,0 +1,126 @@
+{% extends "base_etudiant.html" %}
+
+{% block content %}
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+            📄 Mes documents
+        </h2>
+
+        <p class="text-muted">
+            Justificatifs d'absence envoyés
+        </p>
+
+    </div>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            {% if documents %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Motif
+                                </th>
+
+                                <th>
+                                    Statut
+                                </th>
+
+                                <th>
+                                    Document
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for document in documents %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ document.date_absence }}
+                                    </td>
+
+                                    <td>
+                                        {{ document.motif }}
+                                    </td>
+
+                                    <td>
+
+                                        {% if document.statut == "Justifiée" %}
+
+                                            <span class="badge bg-success">
+                                                🟢 Justifiée
+                                            </span>
+
+                                        {% elif document.statut == "Refusée" %}
+
+                                            <span class="badge bg-danger">
+                                                🔴 Refusée
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge bg-warning text-dark">
+                                                🟡 En attente
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td>
+
+                                        <a
+                                            href="{{ url_for('etudiant.mon_justificatif', absence_id=document.id) }}"
+                                            class="btn btn-outline-primary btn-sm"
+                                            target="_blank">
+
+                                            📎 Voir le PDF
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-info">
+
+                    Aucun document envoyé pour le moment.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endblock %}

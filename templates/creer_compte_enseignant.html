@@ -1,0 +1,498 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- EN-TÊTE -->
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+            👨‍🏫 Créer un compte enseignant
+        </h2>
+
+        <p class="text-muted mb-0">
+            Créez le profil du professeur,
+            ses identifiants de connexion
+            et affectez-lui une ou plusieurs matières.
+        </p>
+
+    </div>
+
+
+    <div class="row">
+
+        <!-- FORMULAIRE PRINCIPAL -->
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-body p-4">
+
+                    <form method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                        <!-- ========================= -->
+                        <!-- INFORMATIONS PERSONNELLES -->
+                        <!-- ========================= -->
+
+                        <h5 class="fw-bold mb-3">
+
+                            👤 Informations personnelles
+
+                        </h5>
+
+
+                        <div class="row">
+
+                            <!-- NOM -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label
+                                    for="nom"
+                                    class="form-label fw-bold">
+
+                                    Nom
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="nom"
+                                    name="nom"
+                                    class="form-control"
+                                    value="{{ request.form.get('nom', '') }}"
+                                    placeholder="Ex : Dupont"
+                                    required>
+
+                            </div>
+
+
+                            <!-- PRÉNOM -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label
+                                    for="prenom"
+                                    class="form-label fw-bold">
+
+                                    Prénom
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="prenom"
+                                    name="prenom"
+                                    class="form-control"
+                                    value="{{ request.form.get('prenom', '') }}"
+                                    placeholder="Ex : Jean"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+
+                            <!-- EMAIL -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label
+                                    for="email"
+                                    class="form-label fw-bold">
+
+                                    Email de connexion
+
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    class="form-control"
+                                    value="{{ request.form.get('email', '') }}"
+                                    placeholder="jean.dupont@ecole.com"
+                                    required>
+
+                            </div>
+
+
+                            <!-- TÉLÉPHONE -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label
+                                    for="telephone"
+                                    class="form-label fw-bold">
+
+                                    Téléphone
+
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="telephone"
+                                    name="telephone"
+                                    class="form-control"
+                                    value="{{ request.form.get('telephone', '') }}"
+                                    placeholder="Ex : 06 12 34 56 78">
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- SPÉCIALITÉ -->
+
+                        <div class="mb-4">
+
+                            <label
+                                for="specialite"
+                                class="form-label fw-bold">
+
+                                Spécialité
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="specialite"
+                                name="specialite"
+                                class="form-control"
+                                value="{{ request.form.get('specialite', '') }}"
+                                placeholder="Ex : Informatique, Réseaux, Mathématiques">
+
+                        </div>
+
+
+                        <hr class="my-4">
+
+
+                        <!-- ========================= -->
+                        <!-- COMPTE DE CONNEXION -->
+                        <!-- ========================= -->
+
+                        <h5 class="fw-bold mb-3">
+
+                            🔐 Compte de connexion
+
+                        </h5>
+
+
+                        <div class="mb-4">
+
+                            <label
+                                for="mot_de_passe"
+                                class="form-label fw-bold">
+
+                                Mot de passe temporaire
+
+                            </label>
+
+
+                            <div class="input-group">
+
+                                <input
+                                    type="password"
+                                    id="mot_de_passe"
+                                    name="mot_de_passe"
+                                    class="form-control"
+                                    minlength="8"
+                                    placeholder="Minimum 8 caractères"
+                                    required>
+
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="afficherMotDePasse()">
+
+                                    👁️
+
+                                </button>
+
+                            </div>
+
+
+                            <div class="form-text">
+
+                                L'administrateur communiquera
+                                ce mot de passe au professeur.
+
+                            </div>
+
+                        </div>
+
+
+                        <hr class="my-4">
+
+
+                        <!-- ========================= -->
+                        <!-- MATIÈRES -->
+                        <!-- ========================= -->
+
+                        <h5 class="fw-bold mb-3">
+
+                            📚 Matières enseignées
+
+                        </h5>
+
+
+                        <p class="text-muted">
+
+                            Sélectionnez une ou plusieurs matières
+                            autorisées pour cet enseignant.
+
+                        </p>
+
+
+                        {% if matieres %}
+
+                            <div class="card bg-light border-0 mb-4">
+
+                                <div class="card-body">
+
+                                    <div class="row">
+
+                                        {% for matiere in matieres %}
+
+                                            <div class="col-md-6 col-xl-4 mb-3">
+
+                                                <div
+                                                    class="border rounded
+                                                           bg-white p-3 h-100">
+
+                                                    <div class="form-check">
+
+                                                        <input
+                                                            class="form-check-input"
+                                                            type="checkbox"
+                                                            name="matieres"
+                                                            value="{{ matiere.id }}"
+                                                            id="matiere_{{ matiere.id }}"
+
+                                                            {% if
+                                                                matiere.id|string
+                                                                in
+                                                                request.form.getlist('matieres')
+                                                            %}
+                                                                checked
+                                                            {% endif %}>
+
+
+                                                        <label
+                                                            class="form-check-label
+                                                                   fw-semibold"
+                                                            for="matiere_{{ matiere.id }}">
+
+                                                            {{ matiere.nom }}
+
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="alert alert-warning">
+
+                                ⚠️ Aucune matière disponible.
+
+                                <br>
+
+                                Vous devez d'abord créer
+                                au moins une matière.
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- ========================= -->
+                        <!-- BOUTONS -->
+                        <!-- ========================= -->
+
+                        <div class="d-flex gap-2 flex-wrap">
+
+                            <button
+                                type="submit"
+                                class="btn btn-success"
+                                {% if not matieres %}
+                                    disabled
+                                {% endif %}>
+
+                                👨‍🏫 Créer l'enseignant
+
+                            </button>
+
+
+                            <a
+                                href="/dashboard"
+                                class="btn btn-secondary">
+
+                                ↩ Retour
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PANNEAU D'INFORMATION -->
+
+        <div class="col-lg-4 mt-4 mt-lg-0">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-3">
+
+                        ℹ️ Fonctionnement du compte
+
+                    </h5>
+
+
+                    <p class="text-muted">
+
+                        Lors de la création,
+                        le système crée automatiquement :
+
+                    </p>
+
+
+                    <div class="mb-3">
+
+                        <span class="badge bg-primary me-2">
+                            1
+                        </span>
+
+                        Le profil enseignant
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <span class="badge bg-primary me-2">
+                            2
+                        </span>
+
+                        Le compte de connexion
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <span class="badge bg-primary me-2">
+                            3
+                        </span>
+
+                        Le rôle ENSEIGNANT
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <span class="badge bg-primary me-2">
+                            4
+                        </span>
+
+                        Les matières autorisées
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <div class="alert alert-success mb-3">
+
+                        <strong>
+                            🔒 Restriction
+                        </strong>
+
+                        <br>
+
+                        Le professeur pourra saisir
+                        des notes uniquement dans
+                        les matières qui lui sont affectées.
+
+                    </div>
+
+
+                    <div class="alert alert-warning mb-0">
+
+                        <strong>
+                            📅 Absences
+                        </strong>
+
+                        <br>
+
+                        Le professeur pourra déclarer
+                        les absences dans le cadre
+                        de ses enseignements autorisés.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+    function afficherMotDePasse() {
+
+        const champMotDePasse =
+            document.getElementById("mot_de_passe");
+
+        if (champMotDePasse.type === "password") {
+
+            champMotDePasse.type = "text";
+
+        } else {
+
+            champMotDePasse.type = "password";
+
+        }
+
+    }
+
+</script>
+
+{% endblock %}

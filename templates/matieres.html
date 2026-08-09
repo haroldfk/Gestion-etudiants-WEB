@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">
+    📚 Gestion des matières
+</h2>
+
+<div class="mb-4">
+
+    <a
+        href="/ajouter_matiere"
+        class="btn btn-success">
+
+        ➕ Ajouter une matière
+
+    </a>
+
+</div>
+
+<div class="card shadow-lg">
+
+    <div class="card-body">
+
+        {% if matieres %}
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Nom de la matière</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for matiere in matieres %}
+
+                        <tr>
+
+                            <td>
+                                {{ matiere.id }}
+                            </td>
+
+                            <td>
+                                {{ matiere.nom }}
+                            </td>
+
+                            <td>
+
+                                <a
+                                    href="/modifier_matiere/{{ matiere.id }}"
+                                    class="btn btn-warning btn-sm">
+
+                                    ✏️ Modifier
+
+                                </a>
+
+                                <form
+                                    method="POST"
+                                    action="/supprimer_matiere/{{ matiere.id }}"
+                                    class="d-inline"
+                                    onsubmit="return confirm('Supprimer cette matière ?')">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        🗑️ Supprimer
+                                    </button>
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        {% else %}
+
+            <div class="alert alert-info">
+
+                Aucune matière enregistrée.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

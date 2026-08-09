@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow">
+
+                <div class="card-header text-center">
+
+                    <h3>Modifier un étudiant</h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                        <div class="mb-3">
+                            <label class="form-label">Nom</label>
+                            <input type="text"
+                                   name="nom"
+                                   value="{{ etudiant.nom }}"
+                                   class="form-control"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Prénom</label>
+                            <input type="text"
+                                   name="prenom"
+                                   value="{{ etudiant.prenom }}"
+                                   class="form-control"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Age</label>
+                            <input type="number"
+                                   name="age"
+                                   value="{{ etudiant.age }}"
+                                   class="form-control"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Filière</label>
+                            <input type="text"
+                                   name="filiere"
+                                   value="{{ etudiant.filiere }}"
+                                   class="form-control"
+                                   required>
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-warning w-100">
+                            Modifier
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

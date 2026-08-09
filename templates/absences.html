@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+
+            📅 Absences de
+            {{ etudiant.nom }}
+            {{ etudiant.prenom }}
+
+        </h2>
+
+        <p class="text-muted">
+
+            Gestion des absences et des justificatifs.
+
+        </p>
+
+    </div>
+
+
+    <!-- Bouton ajouter une absence -->
+
+    <div class="mb-4">
+
+        <a
+            href="/ajouter_absence/{{ etudiant.id }}"
+            class="btn btn-success">
+
+            ➕ Ajouter une absence
+
+        </a>
+
+    </div>
+
+
+    <!-- Tableau des absences -->
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-body">
+
+            {% if absences %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Motif
+                                </th>
+
+                                <th>
+                                    Statut
+                                </th>
+
+                                <th>
+                                    Justificatif
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for absence in absences %}
+
+                                <tr>
+
+                                    <!-- Date -->
+
+                                    <td>
+
+                                        {{ absence.date_absence }}
+
+                                    </td>
+
+
+                                    <!-- Motif -->
+
+                                    <td>
+
+                                        {{ absence.motif }}
+
+                                    </td>
+
+
+                                    <!-- Statut -->
+
+                                    <td>
+
+                                        {% if absence.statut == "Justifiée" %}
+
+                                            <span class="badge bg-success">
+
+                                                🟢 Justifiée
+
+                                            </span>
+
+                                        {% elif absence.statut == "Refusée" %}
+
+                                            <span class="badge bg-danger">
+
+                                                🔴 Refusée
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span
+                                                class="badge bg-warning text-dark">
+
+                                                🟡 En attente
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- Justificatif -->
+
+                                    <td>
+
+                                        {% if absence.justificatif %}
+
+                                            <a
+                                                href="/voir_justificatif/{{ absence.id }}"
+                                                class="btn btn-primary btn-sm"
+                                                target="_blank">
+
+                                                📄 Voir le PDF
+
+                                            </a>
+
+                                        {% else %}
+
+                                            <span class="text-muted">
+
+                                                Aucun justificatif
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- Actions -->
+
+                                    <td>
+
+                                        {% if absence.justificatif %}
+
+                                            {% if absence.statut == "En attente" %}
+
+                                                <form
+                                                    method="POST"
+                                                    action="/accepter_justificatif/{{ absence.id }}"
+                                                    class="d-inline">
+
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                                                    <button
+                                                        type="submit"
+                                                        class="btn btn-success btn-sm"
+                                                        onclick="return confirm('Accepter ce justificatif ?')">
+
+                                                        ✅ Accepter
+
+                                                    </button>
+
+                                                </form>
+
+
+                                                <form
+                                                    method="POST"
+                                                    action="/refuser_justificatif/{{ absence.id }}"
+                                                    class="d-inline">
+
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                                                    <button
+                                                        type="submit"
+                                                        class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Refuser ce justificatif ?')">
+
+                                                        ❌ Refuser
+
+                                                    </button>
+
+                                                </form>
+
+                                            {% else %}
+
+                                                <span class="text-muted">
+
+                                                    Décision effectuée
+
+                                                </span>
+
+                                            {% endif %}
+
+                                        {% else %}
+
+                                            <span class="text-muted">
+
+                                                En attente du PDF
+
+                                            </span>
+
+                                        {% endif %}
+
+
+                                        <form
+                                            method="POST"
+                                            action="/supprimer_absence/{{ absence.id }}"
+                                            class="d-inline"
+                                            onsubmit="return confirm('Supprimer définitivement cette absence ?')">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm ms-1">
+                                                🗑️
+                                            </button>
+                                        </form>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-info">
+
+                    Aucune absence enregistrée.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endblock %}

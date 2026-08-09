@@ -1,0 +1,401 @@
+{% extends "base_etudiant.html" %}
+
+{% block content %}
+
+    <!-- En-tête de l'espace étudiant -->
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+            👨‍🎓 Mon espace étudiant
+        </h2>
+
+        <p class="text-muted">
+            Bienvenue {{ etudiant.prenom }} {{ etudiant.nom }}
+        </p>
+
+    </div>
+
+
+    <!-- Cartes statistiques -->
+
+    <div class="row g-4 mb-5">
+
+        <!-- Filière -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow h-100">
+
+                <div class="card-body text-center">
+
+                    <h5 class="text-muted">
+                        📚 Filière
+                    </h5>
+
+                    <h3 class="fw-bold text-primary">
+                        {{ etudiant.filiere }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Moyenne générale -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow h-100">
+
+                <div class="card-body text-center">
+
+                    <h5 class="text-muted">
+                        📊 Moyenne générale
+                    </h5>
+
+                    <h3 class="fw-bold text-success">
+
+                        {% if moyenne is not none %}
+
+                            {{ "%.2f"|format(moyenne) }} / 20
+
+                        {% else %}
+
+                            Aucune note
+
+                        {% endif %}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Section des notes -->
+
+    <div id="notes" class="card shadow mb-5">
+
+        <div class="card-body">
+
+            <div
+                class="d-flex justify-content-between align-items-center mb-4">
+
+                <h4 class="mb-0">
+                    📝 Mes notes
+                </h4>
+
+                <a
+                    href="/bulletin/{{ etudiant.id }}"
+                    class="btn btn-danger btn-sm">
+
+                    📄 Télécharger mon bulletin
+
+                </a>
+
+            </div>
+
+
+            {% if notes %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>
+                                    Matière
+                                </th>
+
+                                <th>
+                                    Note
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for note in notes %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ note.matiere }}
+                                    </td>
+
+                                    <td>
+
+                                        {% if note.note >= 10 %}
+
+                                            <span class="badge bg-success">
+
+                                                {{ note.note }} / 20
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge bg-danger">
+
+                                                {{ note.note }} / 20
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-info">
+
+                    Aucune note disponible pour le moment.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- Section des absences -->
+
+    <div id="absences" class="card shadow mb-5">
+
+        <div class="card-body">
+
+            <h4 class="mb-4">
+                📅 Mes absences
+            </h4>
+
+
+            {% if absences %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Motif
+                                </th>
+
+                                <th>
+                                    Statut
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for absence in absences %}
+
+                                <tr>
+
+                                    <!-- Date -->
+
+                                    <td>
+                                        {{ absence.date_absence }}
+                                    </td>
+
+
+                                    <!-- Motif -->
+
+                                    <td>
+                                        {{ absence.motif }}
+                                    </td>
+
+
+                                    <!-- Statut -->
+
+                                    <td>
+
+                                        {% if absence.statut == "Justifiée" %}
+
+                                            <span class="badge bg-success">
+
+                                                🟢 Justifiée
+
+                                            </span>
+
+                                        {% elif absence.statut == "Refusée" %}
+
+                                            <span class="badge bg-danger">
+
+                                                🔴 Refusée
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span
+                                                class="badge bg-warning text-dark">
+
+                                                🟡 En attente
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- Action -->
+
+                                    <td>
+
+                                        {% if absence.justificatif %}
+
+                                            <span class="text-success fw-bold">
+
+                                                📎 Justificatif envoyé
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <a
+                                                href="/envoyer_justificatif/{{ absence.id }}"
+                                                class="btn btn-primary btn-sm">
+
+                                                📎 Envoyer un justificatif
+
+                                            </a>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-success">
+
+                    ✅ Aucune absence enregistrée.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- Section informations personnelles -->
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <h4 class="mb-4">
+                👤 Mes informations
+            </h4>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <strong>
+                        Nom :
+                    </strong>
+
+                    <p class="text-muted">
+                        {{ etudiant.nom }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <strong>
+                        Prénom :
+                    </strong>
+
+                    <p class="text-muted">
+                        {{ etudiant.prenom }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <strong>
+                        Filière :
+                    </strong>
+
+                    <p class="text-muted">
+                        {{ etudiant.filiere }}
+                    </p>
+
+                </div>
+
+                {% if etudiant.email %}
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>
+                            Email :
+                        </strong>
+
+                        <p class="text-muted">
+                            {{ etudiant.email }}
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

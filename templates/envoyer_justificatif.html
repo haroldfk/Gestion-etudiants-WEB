@@ -1,0 +1,117 @@
+{% extends "base_etudiant.html" %}
+
+{% block content %}
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+            📎 Envoyer un justificatif
+        </h2>
+
+        <p class="text-muted">
+            Déposez votre justificatif d'absence au format PDF.
+        </p>
+
+    </div>
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-body p-4">
+
+            <div class="alert alert-light border mb-4">
+
+                <h5 class="fw-bold mb-3">
+                    📅 Informations sur l'absence
+                </h5>
+
+                <p class="mb-2">
+
+                    <strong>
+                        Date :
+                    </strong>
+
+                    {{ absence.date_absence }}
+
+                </p>
+
+                <p class="mb-0">
+
+                    <strong>
+                        Motif :
+                    </strong>
+
+                    {{ absence.motif }}
+
+                </p>
+
+            </div>
+
+            <form
+                method="POST"
+                enctype="multipart/form-data">
+
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="mb-4">
+
+                    <label
+                        for="justificatif"
+                        class="form-label fw-bold">
+
+                        Justificatif PDF
+
+                    </label>
+
+                    <input
+                        type="file"
+                        id="justificatif"
+                        name="justificatif"
+                        class="form-control"
+                        accept=".pdf,application/pdf"
+                        required>
+
+                    <div class="form-text">
+
+                        Format autorisé : PDF uniquement.
+                        Taille maximale : 5 Mo.
+
+                    </div>
+
+                </div>
+
+                <div class="alert alert-warning">
+
+                    <strong>
+                        ⚠️ Attention
+                    </strong>
+
+                    <br>
+
+                    Vérifiez que le document sélectionné
+                    correspond bien à cette absence avant l'envoi.
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+
+                    📤 Envoyer le justificatif
+
+                </button>
+
+                <a
+                    href="/espace_etudiant"
+                    class="btn btn-secondary">
+
+                    ↩ Retour
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+{% endblock %}

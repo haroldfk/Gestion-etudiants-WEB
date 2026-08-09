@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="text-center mb-5">
+
+    <h2 class="fw-bold">
+        👋 Bienvenue {{ nom }}
+    </h2>
+
+    <p class="text-muted">
+        Tableau de bord de l'application
+    </p>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-6 mb-4">
+
+        <div class="card shadow-lg">
+
+            <div class="card-body text-center">
+
+                <h5 class="text-muted">
+                    🎓 Étudiants
+                </h5>
+
+                <h1 class="display-3 text-primary fw-bold">
+                    {{ nb_etudiants }}
+                </h1>
+
+                <p class="text-muted">
+                    Étudiants enregistrés
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6 mb-4">
+
+        <div class="card shadow-lg">
+
+            <div class="card-body text-center">
+
+                <h5 class="text-muted">
+                    👥 Utilisateurs
+                </h5>
+
+                <h1 class="display-3 text-success fw-bold">
+                    {{ nb_utilisateurs }}
+                </h1>
+
+                <p class="text-muted">
+                    Comptes utilisateurs
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow-lg mb-5">
+
+    <div class="card-body">
+
+        <h4 class="mb-4">
+            🏆 Top 5 Étudiants
+        </h4>
+
+        {% if top_etudiants %}
+
+            <table class="table table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Rang</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Moyenne</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for etudiant in top_etudiants %}
+
+                        <tr>
+
+                            <td>
+
+                                {% if loop.index == 1 %}
+                                    🥇
+                                {% elif loop.index == 2 %}
+                                    🥈
+                                {% elif loop.index == 3 %}
+                                    🥉
+                                {% else %}
+                                    {{ loop.index }}
+                                {% endif %}
+
+                            </td>
+
+                            <td>{{ etudiant.nom }}</td>
+
+                            <td>{{ etudiant.prenom }}</td>
+
+                            <td>
+
+                                <span class="badge bg-success">
+
+                                    {{ "%.2f"|format(etudiant.moyenne) }}
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        {% else %}
+
+            <div class="alert alert-info">
+
+                Aucune note enregistrée pour le moment.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<div class="card shadow-lg mb-5">
+
+    <div class="card-body">
+
+        <h4 class="mb-4">
+            📊 Étudiants par filière
+        </h4>
+
+        <div style="height:400px;">
+
+            <canvas id="graphiqueFilieres"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/liste_etudiants"
+           class="text-decoration-none">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h1>🎓</h1>
+
+                    <h5>
+                        Liste Étudiants
+                    </h5>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/ajouter_etudiant"
+           class="text-decoration-none">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h1>➕</h1>
+
+                    <h5>
+                        Ajouter Étudiant
+                    </h5>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/classement"
+           class="text-decoration-none">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h1>🏆</h1>
+
+                    <h5>
+                        Classement
+                    </h5>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+
+window.onload = function() {
+
+    const ctx = document.getElementById("graphiqueFilieres");
+
+    new Chart(ctx, {
+
+        type: "bar",
+
+        data: {
+
+            labels: [
+                {% for stat in stats_filieres %}
+                    "{{ stat.filiere }}",
+                {% endfor %}
+            ],
+
+            datasets: [
+
+                {
+
+                    label: "Nombre d'étudiants",
+
+                    data: [
+                        {% for stat in stats_filieres %}
+                            {{ stat.nombre }},
+                        {% endfor %}
+                    ],
+
+                    backgroundColor: [
+                        "#0d6efd",
+                        "#198754",
+                        "#ffc107",
+                        "#dc3545",
+                        "#6f42c1",
+                        "#20c997"
+                    ]
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: true
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+};
+
+</script>
+
+{% endblock %}

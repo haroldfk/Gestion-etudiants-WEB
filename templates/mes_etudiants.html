@@ -1,0 +1,145 @@
+{% extends "base_enseignant.html" %}
+
+{% block content %}
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+            👨‍🎓 Mes étudiants
+        </h2>
+
+        <p class="text-muted">
+            Notes déjà saisies dans vos matières
+        </p>
+
+    </div>
+
+    <div class="card shadow border-0">
+
+        <div class="card-body p-4">
+
+            {% if not matieres %}
+
+                <div class="alert alert-warning">
+
+                    Aucune matière ne vous a encore été attribuée.
+
+                </div>
+
+            {% elif not etudiants %}
+
+                <div class="alert alert-info">
+
+                    Aucun étudiant enregistré pour le moment.
+
+                </div>
+
+            {% else %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>
+                                    Nom
+                                </th>
+
+                                <th>
+                                    Prénom
+                                </th>
+
+                                <th>
+                                    Filière
+                                </th>
+
+                                {% for matiere in matieres %}
+
+                                    <th>
+                                        {{ matiere.nom }}
+                                    </th>
+
+                                {% endfor %}
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for etudiant in etudiants %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ etudiant.nom }}
+                                    </td>
+
+                                    <td>
+                                        {{ etudiant.prenom }}
+                                    </td>
+
+                                    <td>
+                                        {{ etudiant.filiere }}
+                                    </td>
+
+                                    {% for matiere in matieres %}
+
+                                        <td>
+
+                                            {% set note = notes_par_etudiant.get(etudiant.id, {}).get(matiere.nom) %}
+
+                                            {% if note is not none %}
+
+                                                <span class="badge {{ 'bg-success' if note >= 10 else 'bg-danger' }}">
+                                                    {{ note }} / 20
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="text-muted">
+                                                    —
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    {% endfor %}
+
+                                    <td>
+
+                                        <a
+                                            href="{{ url_for('admin.ajouter_absence', id=etudiant.id) }}"
+                                            class="btn btn-outline-warning btn-sm">
+
+                                            📅 Absence
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endblock %}
