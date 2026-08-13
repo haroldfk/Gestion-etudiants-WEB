@@ -16,7 +16,7 @@
 
 <div class="row g-4 mb-5">
 
-    <div class="col-md-6">
+    <div class="col-md-4">
 
         <div class="card shadow border-0 h-100">
 
@@ -46,7 +46,7 @@
 
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
 
         <div class="card shadow border-0 h-100">
 
@@ -63,6 +63,81 @@
             </div>
 
         </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow border-0 h-100">
+
+            <div class="card-body text-center p-4">
+
+                <h5 class="text-muted">
+                    🏫 Classes
+                </h5>
+
+                <h3 class="fw-bold text-success">
+                    {{ nombre_classes }}
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow border-0 mb-5">
+
+    <div class="card-body p-4">
+
+        <h4 class="mb-4">
+            🏫 Mes classes
+        </h4>
+
+        {% if classes %}
+
+            <ul class="list-group list-group-flush">
+
+                {% for classe in classes %}
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <span>
+                            {{ classe.nom }}
+
+                            {% if classe.niveau %}
+                                <span class="text-muted">
+                                    — {{ classe.niveau }}
+                                </span>
+                            {% endif %}
+
+                        </span>
+
+                        {% if classe.annee_universitaire %}
+
+                            <span class="badge bg-secondary">
+                                {{ classe.annee_universitaire }}
+                            </span>
+
+                        {% endif %}
+
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <div class="alert alert-warning">
+
+                Aucune de vos matières n'est encore associée à une classe.
+
+            </div>
+
+        {% endif %}
 
     </div>
 
@@ -103,6 +178,22 @@
                                        class="btn btn-primary btn-sm">
 
                                         📝 Saisir des notes
+
+                                    </a>
+
+                                    <a
+                                        href="{{ url_for('enseignant.evaluations_matiere', matiere_id=matiere.id) }}"
+                                        class="btn btn-secondary btn-sm">
+
+                                        📊 Évaluations
+
+                                    </a>
+
+                                    <a
+                                        href="{{ url_for('enseignant.cours_matiere', matiere_id=matiere.id) }}"
+                                        class="btn btn-info btn-sm">
+
+                                        📄 Déposer un cours
 
                                     </a>
 

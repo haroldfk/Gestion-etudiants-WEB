@@ -8,7 +8,7 @@ from flask import (
     session,
     url_for
 )
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 
 from config import db_cursor
 
@@ -26,35 +26,6 @@ def logout():
     session.clear()
 
     return redirect(url_for("auth.login"))
-
-
-@auth_bp.route("/register", methods=["GET", "POST"], endpoint="register")
-def register():
-
-    if request.method == "POST":
-
-        nom = request.form["nom"]
-        email = request.form["email"]
-        mot_de_passe = request.form["mot_de_passe"]
-
-        mot_de_passe_hash = generate_password_hash(
-            mot_de_passe
-        )
-
-        with db_cursor() as (connexion, cursor):
-
-            cursor.execute(
-                """
-                INSERT INTO utilisateurs
-                (nom, email, mot_de_passe)
-                VALUES (%s, %s, %s)
-                """,
-                (nom, email, mot_de_passe_hash)
-            )
-
-        return redirect(url_for("auth.login"))
-
-    return render_template("register.html")
 
 
 @auth_bp.route("/login", methods=["GET", "POST"], endpoint="login")

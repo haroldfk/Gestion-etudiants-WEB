@@ -1,0 +1,180 @@
+{% extends "base_enseignant.html" %}
+
+{% from "_macros.html" import icone_fichier %}
+
+{% block content %}
+
+<style>
+
+    .cours-carte {
+        aspect-ratio: 1 / 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .cours-carte .cours-icone {
+        font-size: 2.2rem;
+    }
+
+    .cours-carte .cours-titre {
+        font-weight: bold;
+        margin: 8px 0 4px;
+        word-break: break-word;
+    }
+
+</style>
+
+<div class="mb-4">
+
+    <h2 class="fw-bold">
+        📄 Cours — {{ matiere.nom }}
+    </h2>
+
+    <p class="text-muted">
+        Les documents déposés ici sont visibles par tous les étudiants
+        des classes suivant cette matière.
+    </p>
+
+</div>
+
+<div class="card shadow border-0 mb-4">
+
+    <div class="card-body p-4">
+
+        <h5 class="fw-bold mb-3">
+            ➕ Déposer un cours
+        </h5>
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Titre
+                </label>
+
+                <input
+                    type="text"
+                    name="titre"
+                    class="form-control"
+                    placeholder="Ex : Chapitre 3 - Les boucles"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Fichier
+                </label>
+
+                <input
+                    type="file"
+                    name="fichier"
+                    class="form-control"
+                    required>
+
+                <div class="form-text">
+                    PDF, Word, PowerPoint, Excel, texte ou zip. 5 Mo max.
+                </div>
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-success">
+
+                💾 Déposer
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="card shadow border-0">
+
+    <div class="card-body p-4">
+
+        <h5 class="fw-bold mb-3">
+            📚 Cours déposés
+        </h5>
+
+        {% if cours_liste %}
+
+            <div class="row g-3">
+
+                {% for cours in cours_liste %}
+
+                    <div class="col-6 col-md-4 col-lg-3">
+
+                        <div class="card shadow-sm h-100 cours-carte">
+
+                            <div class="cours-icone">
+                                {{ icone_fichier(cours.fichier) }}
+                            </div>
+
+                            <div class="cours-titre">
+                                {{ cours.titre or "Sans titre" }}
+                            </div>
+
+                            <small class="text-muted mb-2">
+                                {{ cours.enseignant_prenom }} {{ cours.enseignant_nom }}
+                            </small>
+
+                            <div class="d-flex gap-1">
+
+                                <a
+                                    href="/enseignant/telecharger_cours/{{ cours.id }}"
+                                    class="btn btn-primary btn-sm">
+
+                                    ⬇️
+
+                                </a>
+
+                                {% if cours.enseignant_id == enseignant_id %}
+
+                                    <form
+                                        method="POST"
+                                        action="/enseignant/supprimer_cours/{{ cours.id }}"
+                                        onsubmit="return confirm('Supprimer ce cours ?')">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            🗑️
+                                        </button>
+                                    </form>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="alert alert-info mb-0">
+
+                Aucun cours déposé pour le moment.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

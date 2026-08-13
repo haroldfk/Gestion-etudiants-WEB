@@ -1,0 +1,40 @@
+{% macro icone_fichier(fichier, taille=56) %}
+
+    {% set extension = fichier.rsplit('.', 1)[-1]|upper if fichier and '.' in fichier else '' %}
+
+    {% set couleurs = {
+        'PDF': '#dc3545',
+        'DOC': '#2b579a',
+        'DOCX': '#2b579a',
+        'XLS': '#217346',
+        'XLSX': '#217346',
+        'PPT': '#d24726',
+        'PPTX': '#d24726',
+        'TXT': '#6c757d',
+        'ZIP': '#a1750d'
+    } %}
+
+    {% set couleur = couleurs.get(extension, '#6c757d') %}
+
+    <svg
+        width="{{ taille }}"
+        height="{{ taille }}"
+        viewBox="0 0 48 48"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true">
+
+        <path
+            d="M10 2 H29 L38 11 V44 A2 2 0 0 1 36 46 H10 A2 2 0 0 1 8 44 V4 A2 2 0 0 1 10 2 Z"
+            fill="{{ couleur }}"/>
+
+        <path
+            d="M29 2 L38 11 H31 A2 2 0 0 1 29 9 Z"
+            fill="rgba(255,255,255,0.4)"/>
+
+        {% if extension %}
+            <text x="23" y="33" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white" text-anchor="middle">{{ extension }}</text>
+        {% endif %}
+
+    </svg>
+
+{% endmacro %}

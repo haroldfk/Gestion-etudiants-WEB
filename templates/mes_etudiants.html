@@ -30,7 +30,7 @@
 
                 <div class="alert alert-info">
 
-                    Aucun étudiant enregistré pour le moment.
+                    Aucun étudiant dans vos classes pour le moment.
 
                 </div>
 
@@ -54,6 +54,10 @@
 
                                 <th>
                                     Filière
+                                </th>
+
+                                <th>
+                                    Classe
                                 </th>
 
                                 {% for matiere in matieres %}
@@ -88,6 +92,10 @@
 
                                     <td>
                                         {{ etudiant.filiere }}
+                                    </td>
+
+                                    <td>
+                                        {{ etudiant.classe_nom or "-" }}
                                     </td>
 
                                     {% for matiere in matieres %}

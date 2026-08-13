@@ -8,12 +8,15 @@ from blueprints.admin import admin_bp
 from blueprints.auth import auth_bp
 from blueprints.enseignant import enseignant_bp
 from blueprints.etudiant import etudiant_bp
+from utils import formater_heure
 
 load_dotenv()
 
 app = Flask(__name__)
 
 app.secret_key = os.environ["FLASK_SECRET_KEY"]
+
+app.jinja_env.filters["heure"] = formater_heure
 
 csrf = CSRFProtect(app)
 
@@ -23,10 +26,21 @@ app.config["UPLOAD_FOLDER"] = os.path.join(
     "justificatifs"
 )
 
+app.config["COURS_FOLDER"] = os.path.join(
+    app.root_path,
+    "uploads",
+    "cours"
+)
+
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 
 os.makedirs(
     app.config["UPLOAD_FOLDER"],
+    exist_ok=True
+)
+
+os.makedirs(
+    app.config["COURS_FOLDER"],
     exist_ok=True
 )
 

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">
+    ➕ Ajouter une classe
+</h2>
+
+<form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Nom
+        </label>
+
+        <input
+            type="text"
+            name="nom"
+            class="form-control"
+            placeholder="Exemple : L1 Informatique"
+            required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Niveau
+        </label>
+
+        <input
+            type="text"
+            name="niveau"
+            class="form-control"
+            placeholder="Exemple : Licence 1">
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Année universitaire
+        </label>
+
+        <input
+            type="text"
+            name="annee_universitaire"
+            class="form-control"
+            placeholder="Exemple : 2025-2026">
+
+    </div>
+
+    <button
+        type="submit"
+        class="btn btn-success">
+
+        Ajouter
+
+    </button>
+
+    <a
+        href="/classes"
+        class="btn btn-secondary">
+
+        Retour
+
+    </a>
+
+</form>
+
+{% endblock %}

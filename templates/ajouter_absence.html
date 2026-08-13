@@ -19,84 +19,132 @@
 
         </p>
 
-        <form method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        {% if creneaux %}
 
-            <div class="mb-3">
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-                <label class="form-label">
+                <div class="mb-3">
 
-                    Date de l'absence
+                    <label class="form-label">
 
-                </label>
+                        Créneau concerné
 
-                <input
-                    type="date"
-                    name="date_absence"
-                    class="form-control"
-                    required>
+                    </label>
+
+                    <select name="emploi_du_temps_id" class="form-select" required>
+
+                        <option value="">
+                            -- Choisir --
+                        </option>
+
+                        {% for creneau in creneaux %}
+
+                            <option value="{{ creneau.id }}">
+
+                                {{ creneau.matiere_nom }} —
+                                {{ creneau.enseignant_prenom }} {{ creneau.enseignant_nom }}
+                                ({{ creneau.jour_semaine }} {{ creneau.heure_debut|heure }}-{{ creneau.heure_fin|heure }})
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <div class="form-text">
+                        Le cours auquel l'étudiant n'a pas assisté.
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Date de l'absence
+
+                    </label>
+
+                    <input
+                        type="date"
+                        name="date_absence"
+                        class="form-control"
+                        required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Motif
+
+                    </label>
+
+                    <textarea
+                        name="motif"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Exemple : Absence au cours de Python"
+                        required></textarea>
+
+                </div>
+
+                <div class="alert alert-info">
+
+                    <strong>Information :</strong><br>
+
+                    Après l'enregistrement, cette absence sera automatiquement
+                    marquée <strong>"En attente"</strong>.
+                    L'étudiant pourra envoyer un justificatif et
+                    l'administration décidera ensuite de la valider ou de la refuser.
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+
+                    💾 Enregistrer l'absence
+
+                </button>
+
+                {% if session.get("role") == "ADMIN" %}
+
+                    <a
+                        href="/absences/{{ etudiant_id }}"
+                        class="btn btn-secondary">
+
+                        ↩ Retour
+
+                    </a>
+
+                {% else %}
+
+                    <a
+                        href="{{ url_for('enseignant.mes_etudiants') }}"
+                        class="btn btn-secondary">
+
+                        ↩ Retour
+
+                    </a>
+
+                {% endif %}
+
+            </form>
+
+        {% else %}
+
+            <div class="alert alert-warning mb-0">
+
+                ⚠️ Aucun créneau disponible pour cet étudiant. Il faut
+                d'abord programmer un emploi du temps pour sa classe
+                avant de pouvoir déclarer une absence.
 
             </div>
 
-            <div class="mb-3">
-
-                <label class="form-label">
-
-                    Motif
-
-                </label>
-
-                <textarea
-                    name="motif"
-                    class="form-control"
-                    rows="3"
-                    placeholder="Exemple : Absence au cours de Python"
-                    required></textarea>
-
-            </div>
-
-            <div class="alert alert-info">
-
-                <strong>Information :</strong><br>
-
-                Après l'enregistrement, cette absence sera automatiquement
-                marquée <strong>"En attente"</strong>.
-                L'étudiant pourra envoyer un justificatif et
-                l'administration décidera ensuite de la valider ou de la refuser.
-
-            </div>
-
-            <button
-                type="submit"
-                class="btn btn-success">
-
-                💾 Enregistrer l'absence
-
-            </button>
-
-            {% if session.get("role") == "ADMIN" %}
-
-                <a
-                    href="/absences/{{ etudiant_id }}"
-                    class="btn btn-secondary">
-
-                    ↩ Retour
-
-                </a>
-
-            {% else %}
-
-                <a
-                    href="{{ url_for('enseignant.mes_etudiants') }}"
-                    class="btn btn-secondary">
-
-                    ↩ Retour
-
-                </a>
-
-            {% endif %}
-
-        </form>
+        {% endif %}
 
     </div>
 

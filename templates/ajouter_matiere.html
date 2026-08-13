@@ -28,6 +28,55 @@
 
             </div>
 
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Classes
+                </label>
+
+                {% if classes %}
+
+                    <div class="border rounded p-3">
+
+                        {% for classe in classes %}
+
+                            <div class="form-check">
+
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="classes"
+                                    value="{{ classe.id }}"
+                                    id="classe_{{ classe.id }}">
+
+                                <label
+                                    class="form-check-label"
+                                    for="classe_{{ classe.id }}">
+
+                                    {{ classe.nom }}
+
+                                </label>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="form-text">
+                        Une matière peut être enseignée dans plusieurs classes.
+                    </div>
+
+                {% else %}
+
+                    <div class="alert alert-info mb-0">
+                        Aucune classe disponible pour le moment.
+                    </div>
+
+                {% endif %}
+
+            </div>
+
             <button
                 type="submit"
                 class="btn btn-success">

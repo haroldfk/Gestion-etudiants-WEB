@@ -102,9 +102,17 @@
 
                     <a
                         class="nav-link"
+                        href="/espace_etudiant#evaluations">
+
+                        📅 Mes évaluations
+
+                    </a>
+
+                    <a
+                        class="nav-link"
                         href="/espace_etudiant#absences">
 
-                        📅 Mes absences
+                        🚫 Mes absences
 
                     </a>
 
@@ -113,6 +121,38 @@
                         href="/mes_documents">
 
                         📄 Mes documents
+
+                    </a>
+
+                    <a
+                        class="nav-link"
+                        href="/mes_cours">
+
+                        📚 Mes cours
+
+                    </a>
+
+                    <a
+                        class="nav-link"
+                        href="/mon_emploi_du_temps">
+
+                        📅 Mon emploi du temps
+
+                    </a>
+
+                    <a
+                        class="nav-link"
+                        href="/mes_notifications">
+
+                        🔔 Notifications
+
+                        {% if notifications_non_lues %}
+
+                            <span class="badge bg-danger">
+                                {{ notifications_non_lues }}
+                            </span>
+
+                        {% endif %}
 
                     </a>
 

@@ -1,0 +1,120 @@
+{% extends "base_etudiant.html" %}
+
+{% from "_macros.html" import icone_fichier %}
+
+{% block content %}
+
+<style>
+
+    .cours-carte {
+        aspect-ratio: 1 / 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .cours-carte .cours-icone {
+        font-size: 2.2rem;
+    }
+
+    .cours-carte .cours-titre {
+        font-weight: bold;
+        margin: 8px 0 4px;
+        word-break: break-word;
+    }
+
+</style>
+
+<div class="mb-4">
+
+    <h2 class="fw-bold">
+        📚 Mes cours
+    </h2>
+
+    <p class="text-muted">
+
+        {% if etudiant.classe_nom %}
+            Documents disponibles pour votre classe : {{ etudiant.classe_nom }}
+        {% else %}
+            Aucune classe assignée pour le moment.
+        {% endif %}
+
+    </p>
+
+</div>
+
+{% if etudiant.classe_nom %}
+
+    {% if cours_par_matiere %}
+
+        {% for matiere_nom, cours_liste in cours_par_matiere.items() %}
+
+            <div class="card shadow border-0 mb-4">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-3">
+                        📖 {{ matiere_nom }}
+                    </h5>
+
+                    <div class="row g-3">
+
+                        {% for cours in cours_liste %}
+
+                            <div class="col-6 col-md-4 col-lg-3">
+
+                                <a
+                                    href="/telecharger_cours/{{ cours.id }}"
+                                    class="card shadow-sm h-100 cours-carte text-decoration-none text-dark">
+
+                                    <div class="cours-icone">
+                                        {{ icone_fichier(cours.fichier) }}
+                                    </div>
+
+                                    <div class="cours-titre">
+                                        {{ cours.titre or "Sans titre" }}
+                                    </div>
+
+                                    <small class="text-muted">
+                                        {{ cours.enseignant_prenom }} {{ cours.enseignant_nom }}
+                                    </small>
+
+                                </a>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="alert alert-info">
+
+            Aucun cours disponible pour le moment.
+
+        </div>
+
+    {% endif %}
+
+{% else %}
+
+    <div class="alert alert-info">
+
+        Votre compte n'est rattaché à aucune classe pour le moment.
+        Contactez l'administration.
+
+    </div>
+
+{% endif %}
+
+{% endblock %}

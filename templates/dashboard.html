@@ -165,6 +165,91 @@
 
 </div>
 
+<div class="card shadow-lg mb-5">
+
+    <div class="card-body">
+
+        <h4 class="mb-4">
+            🏫 Statistiques par classe
+        </h4>
+
+        {% if stats_classes %}
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Classe</th>
+                        <th>Niveau</th>
+                        <th>Étudiants</th>
+                        <th>Moyenne générale</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for classe in stats_classes %}
+
+                        <tr>
+
+                            <td>
+                                {{ classe.nom }}
+                            </td>
+
+                            <td>
+                                {{ classe.niveau or "-" }}
+                            </td>
+
+                            <td>
+                                <span class="badge bg-primary">
+                                    {{ classe.nombre_etudiants }}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                {% if classe.moyenne is not none %}
+
+                                    <span class="badge bg-success">
+                                        {{ "%.2f"|format(classe.moyenne) }} / 20
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        Aucune note
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        {% else %}
+
+            <div class="alert alert-info">
+
+                Aucune classe enregistrée.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
 <div class="row">
 
     <div class="col-md-4 mb-3">

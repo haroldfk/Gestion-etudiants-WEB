@@ -10,7 +10,7 @@
 
     <div class="row">
 
-        <div class="col-md-6">
+        <div class="col-md-5">
 
             <select name="filiere" class="form-select">
 
@@ -28,6 +28,33 @@
                 >
 
                     {{ filiere.filiere }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <div class="col-md-5">
+
+            <select name="classe_id" class="form-select">
+
+                <option value="">
+                    Toutes les classes
+                </option>
+
+                {% for classe in classes %}
+
+                <option
+                    value="{{ classe.id }}"
+                    {% if classe_selectionnee == classe.id|string %}
+                        selected
+                    {% endif %}
+                >
+
+                    {{ classe.nom }}
 
                 </option>
 
@@ -67,6 +94,7 @@
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Filière</th>
+                    <th>Classe</th>
                     <th>Moyenne</th>
 
                 </tr>
@@ -98,6 +126,8 @@
                     <td>{{ etudiant.prenom }}</td>
 
                     <td>{{ etudiant.filiere }}</td>
+
+                    <td>{{ etudiant.classe_nom or "-" }}</td>
 
                     <td>
 

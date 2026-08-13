@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">
+    ✏️ Modifier un enseignant
+</h2>
+
+<div class="card shadow-lg">
+
+    <div class="card-body">
+
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Nom
+                    </label>
+
+                    <input
+                        type="text"
+                        name="nom"
+                        class="form-control"
+                        value="{{ enseignant.nom }}"
+                        required>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Prénom
+                    </label>
+
+                    <input
+                        type="text"
+                        name="prenom"
+                        class="form-control"
+                        value="{{ enseignant.prenom }}"
+                        required>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-control"
+                        value="{{ enseignant.email }}"
+                        required>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Téléphone
+                    </label>
+
+                    <input
+                        type="tel"
+                        name="telephone"
+                        class="form-control"
+                        value="{{ enseignant.telephone or '' }}">
+
+                </div>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Spécialité
+                </label>
+
+                <input
+                    type="text"
+                    name="specialite"
+                    class="form-control"
+                    value="{{ enseignant.specialite or '' }}">
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-warning">
+
+                Enregistrer
+
+            </button>
+
+            <a
+                href="/enseignants"
+                class="btn btn-secondary">
+
+                Retour
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

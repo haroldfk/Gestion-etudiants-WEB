@@ -66,6 +66,18 @@
                                    required>
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label">Classe</label>
+                            <select name="classe_id" class="form-select">
+                                <option value="">-- Aucune classe --</option>
+                                {% for classe in classes %}
+                                    <option value="{{ classe.id }}">
+                                        {{ classe.nom }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
                         <button type="submit"
                                 class="btn btn-success w-100">
                             Ajouter

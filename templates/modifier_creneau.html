@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">
+    ✏️ Modifier un créneau — {{ classe.nom }}
+</h2>
+
+<div class="card shadow-lg">
+
+    <div class="card-body">
+
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Matière — Enseignant
+                </label>
+
+                <select name="combinaison" class="form-select" required>
+
+                    {% for combinaison in combinaisons %}
+
+                        <option
+                            value="{{ combinaison.matiere_id }}|{{ combinaison.enseignant_id }}"
+                            {% if
+                                combinaison.matiere_id == creneau.matiere_id
+                                and combinaison.enseignant_id == creneau.enseignant_id
+                            %}
+                                selected
+                            {% endif %}>
+
+                            {{ combinaison.matiere_nom }}
+                            — {{ combinaison.enseignant_prenom }} {{ combinaison.enseignant_nom }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Jour
+                    </label>
+
+                    <select name="jour_semaine" class="form-select" required>
+
+                        {% for jour in jours %}
+                            <option
+                                value="{{ jour }}"
+                                {% if jour == creneau.jour_semaine %}selected{% endif %}>
+                                {{ jour }}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Créneau horaire
+                    </label>
+
+                    <select name="bloc_horaire" class="form-select" required>
+
+                        {% for debut, fin in blocs %}
+                            <option
+                                value="{{ debut }}|{{ fin }}"
+                                {% if
+                                    debut == creneau.heure_debut|heure
+                                    and fin == creneau.heure_fin|heure
+                                %}
+                                    selected
+                                {% endif %}>
+                                {{ debut }} - {{ fin }}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Salle
+                </label>
+
+                <input
+                    type="text"
+                    name="salle"
+                    class="form-control"
+                    value="{{ creneau.salle or '' }}">
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-warning">
+
+                Enregistrer
+
+            </button>
+
+            <a
+                href="/emploi_du_temps/{{ classe.id }}"
+                class="btn btn-secondary">
+
+                Retour
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

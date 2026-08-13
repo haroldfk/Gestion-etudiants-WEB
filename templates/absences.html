@@ -57,6 +57,10 @@
                                 </th>
 
                                 <th>
+                                    Cours
+                                </th>
+
+                                <th>
                                     Motif
                                 </th>
 
@@ -87,6 +91,27 @@
                                     <td>
 
                                         {{ absence.date_absence }}
+
+                                    </td>
+
+
+                                    <!-- Cours -->
+
+                                    <td>
+
+                                        {% if absence.matiere_nom %}
+
+                                            {{ absence.matiere_nom }}
+                                            <br>
+                                            <small class="text-muted">
+                                                {{ absence.enseignant_prenom }} {{ absence.enseignant_nom }}
+                                            </small>
+
+                                        {% else %}
+
+                                            <span class="text-muted">-</span>
+
+                                        {% endif %}
 
                                     </td>
 

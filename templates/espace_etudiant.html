@@ -23,7 +23,7 @@
 
         <!-- Filière -->
 
-        <div class="col-md-6">
+        <div class="col-md-4">
 
             <div class="card shadow h-100">
 
@@ -44,9 +44,32 @@
         </div>
 
 
+        <!-- Classe -->
+
+        <div class="col-md-4">
+
+            <div class="card shadow h-100">
+
+                <div class="card-body text-center">
+
+                    <h5 class="text-muted">
+                        🏫 Classe
+                    </h5>
+
+                    <h3 class="fw-bold text-primary">
+                        {{ etudiant.classe_nom or "Non assignée" }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
         <!-- Moyenne générale -->
 
-        <div class="col-md-6">
+        <div class="col-md-4">
 
             <div class="card shadow h-100">
 
@@ -118,6 +141,10 @@
                                 </th>
 
                                 <th>
+                                    Évaluation
+                                </th>
+
+                                <th>
                                     Note
                                 </th>
 
@@ -133,6 +160,10 @@
 
                                     <td>
                                         {{ note.matiere }}
+                                    </td>
+
+                                    <td>
+                                        {{ note.evaluation_nom or "Note libre" }}
                                     </td>
 
                                     <td>
@@ -182,6 +213,97 @@
     </div>
 
 
+    <!-- Section des évaluations -->
+
+    <div id="evaluations" class="card shadow mb-5">
+
+        <div class="card-body">
+
+            <h4 class="mb-4">
+                📅 Mes évaluations
+            </h4>
+
+            {% if evaluations %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>Matière</th>
+                                <th>Évaluation</th>
+                                <th>Coefficient</th>
+                                <th>Quand</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for evaluation in evaluations %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ evaluation.matiere_nom }}
+                                    </td>
+
+                                    <td>
+                                        {{ evaluation.nom or "Évaluation" }}
+                                    </td>
+
+                                    <td>
+                                        {{ evaluation.coefficient }}
+                                    </td>
+
+                                    <td>
+
+                                        {% if evaluation.jour_semaine %}
+
+                                            {{ evaluation.jour_semaine }}
+                                            {{ evaluation.heure_debut|heure }}-{{ evaluation.heure_fin|heure }}
+
+                                        {% elif evaluation.date_evaluation %}
+
+                                            {{ evaluation.date_evaluation }}
+
+                                        {% else %}
+
+                                            Non communiqué
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-info">
+
+                    Aucune évaluation prévue pour le moment.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
     <!-- Section des absences -->
 
     <div id="absences" class="card shadow mb-5">
@@ -205,6 +327,10 @@
 
                                 <th>
                                     Date
+                                </th>
+
+                                <th>
+                                    Cours
                                 </th>
 
                                 <th>
@@ -233,6 +359,13 @@
 
                                     <td>
                                         {{ absence.date_absence }}
+                                    </td>
+
+
+                                    <!-- Cours -->
+
+                                    <td>
+                                        {{ absence.matiere_nom or "-" }}
                                     </td>
 
 
@@ -372,6 +505,18 @@
 
                     <p class="text-muted">
                         {{ etudiant.filiere }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <strong>
+                        Classe :
+                    </strong>
+
+                    <p class="text-muted">
+                        {{ etudiant.classe_nom or "Non assignée" }}
                     </p>
 
                 </div>

@@ -1,0 +1,59 @@
+{% extends "base_etudiant.html" %}
+
+{% block content %}
+
+<div class="mb-4">
+
+    <h2 class="fw-bold">
+        🔔 Mes notifications
+    </h2>
+
+</div>
+
+{% if notifications %}
+
+    <div class="list-group">
+
+        {% for notification in notifications %}
+
+            <div class="list-group-item {{ 'list-group-item-light' if notification.lu else '' }}">
+
+                <div class="d-flex justify-content-between align-items-start">
+
+                    <h6 class="mb-1 fw-bold">
+
+                        {% if not notification.lu %}
+                            <span class="badge bg-primary">Nouveau</span>
+                        {% endif %}
+
+                        {{ notification.titre or "Notification" }}
+
+                    </h6>
+
+                    <small class="text-muted">
+                        {{ notification.date_notification }}
+                    </small>
+
+                </div>
+
+                <p class="mb-0 text-muted">
+                    {{ notification.message }}
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <div class="alert alert-info">
+
+        Aucune notification pour le moment.
+
+    </div>
+
+{% endif %}
+
+{% endblock %}

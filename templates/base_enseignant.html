@@ -114,6 +114,32 @@
 
                     </a>
 
+
+                    <a
+                        class="nav-link"
+                        href="/mon_emploi_du_temps_enseignant">
+
+                        📅 Mon emploi du temps
+
+                    </a>
+
+
+                    <a
+                        class="nav-link"
+                        href="/enseignant/mes_notifications">
+
+                        🔔 Notifications
+
+                        {% if notifications_non_lues %}
+
+                            <span class="badge bg-danger">
+                                {{ notifications_non_lues }}
+                            </span>
+
+                        {% endif %}
+
+                    </a>
+
                 </div>
 
 

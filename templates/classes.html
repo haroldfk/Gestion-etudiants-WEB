@@ -2,17 +2,24 @@
 
 {% block content %}
 
-<h2 class="mb-4">
-    📚 Gestion des matières
+<h2 class="mb-1">
+    🏫 Gestion des classes
 </h2>
+
+<p class="text-muted mb-4">
+
+    Pour gérer l'emploi du temps d'une classe, cliquez sur son bouton
+    "📅 Emploi du temps" dans le tableau ci-dessous.
+
+</p>
 
 <div class="mb-4">
 
     <a
-        href="/ajouter_matiere"
+        href="/ajouter_classe"
         class="btn btn-success">
 
-        ➕ Ajouter une matière
+        ➕ Ajouter une classe
 
     </a>
 
@@ -22,7 +29,7 @@
 
     <div class="card-body">
 
-        {% if matieres %}
+        {% if classes %}
 
             <table class="table table-hover align-middle">
 
@@ -31,8 +38,9 @@
                     <tr>
 
                         <th>ID</th>
-                        <th>Nom de la matière</th>
-                        <th>Classes</th>
+                        <th>Nom</th>
+                        <th>Niveau</th>
+                        <th>Année universitaire</th>
                         <th>Actions</th>
 
                     </tr>
@@ -41,26 +49,38 @@
 
                 <tbody>
 
-                    {% for matiere in matieres %}
+                    {% for classe in classes %}
 
                         <tr>
 
                             <td>
-                                {{ matiere.id }}
+                                {{ classe.id }}
                             </td>
 
                             <td>
-                                {{ matiere.nom }}
+                                {{ classe.nom }}
                             </td>
 
                             <td>
-                                {{ matiere.classes_noms or "-" }}
+                                {{ classe.niveau or "-" }}
+                            </td>
+
+                            <td>
+                                {{ classe.annee_universitaire or "-" }}
                             </td>
 
                             <td>
 
                                 <a
-                                    href="/modifier_matiere/{{ matiere.id }}"
+                                    href="/emploi_du_temps/{{ classe.id }}"
+                                    class="btn btn-primary btn-sm">
+
+                                    📅 Emploi du temps
+
+                                </a>
+
+                                <a
+                                    href="/modifier_classe/{{ classe.id }}"
                                     class="btn btn-warning btn-sm">
 
                                     ✏️ Modifier
@@ -69,9 +89,9 @@
 
                                 <form
                                     method="POST"
-                                    action="/supprimer_matiere/{{ matiere.id }}"
+                                    action="/supprimer_classe/{{ classe.id }}"
                                     class="d-inline"
-                                    onsubmit="return confirm('Supprimer cette matière ?')">
+                                    onsubmit="return confirm('Supprimer cette classe ?')">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <button type="submit" class="btn btn-danger btn-sm">
                                         🗑️ Supprimer
@@ -92,7 +112,7 @@
 
             <div class="alert alert-info">
 
-                Aucune matière enregistrée.
+                Aucune classe enregistrée.
 
             </div>
 

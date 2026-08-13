@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">
+    Modifier une classe
+</h2>
+
+<form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Nom
+        </label>
+
+        <input
+            type="text"
+            name="nom"
+            value="{{ classe.nom }}"
+            class="form-control"
+            required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Niveau
+        </label>
+
+        <input
+            type="text"
+            name="niveau"
+            value="{{ classe.niveau or '' }}"
+            class="form-control">
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Année universitaire
+        </label>
+
+        <input
+            type="text"
+            name="annee_universitaire"
+            value="{{ classe.annee_universitaire or '' }}"
+            class="form-control">
+
+    </div>
+
+    <button
+        type="submit"
+        class="btn btn-warning">
+
+        Modifier
+
+    </button>
+
+    <a
+        href="/classes"
+        class="btn btn-secondary">
+
+        Retour
+
+    </a>
+
+</form>
+
+{% endblock %}

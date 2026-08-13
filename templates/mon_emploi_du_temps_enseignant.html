@@ -1,0 +1,96 @@
+{% extends "base_enseignant.html" %}
+
+{% block content %}
+
+<div class="mb-4">
+
+    <h2 class="fw-bold">
+        📅 Mon emploi du temps
+    </h2>
+
+    <p class="text-muted">
+        Vos cours, toutes classes confondues
+    </p>
+
+</div>
+
+<div class="row g-3">
+
+    {% for jour in jours %}
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-header bg-dark text-white fw-bold">
+                    {{ jour }}
+                </div>
+
+                <div class="card-body">
+
+                    {% if creneaux_par_jour[jour] %}
+
+                        {% for creneau in creneaux_par_jour[jour] %}
+
+                            <div class="border rounded p-2 mb-2">
+
+                                <div class="fw-bold">
+
+                                    {{ creneau.heure_debut|heure }}
+                                    –
+                                    {{ creneau.heure_fin|heure }}
+
+                                </div>
+
+                                <div>
+                                    📖 {{ creneau.matiere_nom }}
+
+                                    {% if creneau.evaluations_noms %}
+
+                                        <span
+                                            class="badge bg-danger"
+                                            title="{{ creneau.evaluations_noms }}">
+
+                                            (Évaluation)
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                                <div class="text-muted">
+                                    🏫 {{ creneau.classe_nom }}
+                                </div>
+
+                                {% if creneau.salle %}
+
+                                    <div class="text-muted">
+                                        🚪 {{ creneau.salle }}
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="text-muted mb-0">
+                            Aucun cours.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

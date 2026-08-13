@@ -45,7 +45,8 @@
                             id="etudiant_id"
                             name="etudiant_id"
                             class="form-select"
-                            required>
+                            required
+                            {% if not etudiants %}disabled{% endif %}>
 
                             <option value="">
                                 -- Sélectionner un étudiant --
@@ -63,11 +64,77 @@
                                         - {{ etudiant.filiere }}
                                     {% endif %}
 
+                                    {% if etudiant.classe_nom %}
+                                        ({{ etudiant.classe_nom }})
+                                    {% endif %}
+
                                 </option>
 
                             {% endfor %}
 
                         </select>
+
+                        {% if not etudiants %}
+
+                            <div class="form-text text-danger">
+
+                                Cette matière n'est associée à aucune
+                                classe, ou sa classe ne contient
+                                encore aucun étudiant.
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="mb-4">
+
+                        <label
+                            for="evaluation_id"
+                            class="form-label fw-bold">
+
+                            📊 Évaluation (optionnel)
+
+                        </label>
+
+                        <select
+                            id="evaluation_id"
+                            name="evaluation_id"
+                            class="form-select">
+
+                            <option value="">
+                                -- Note libre (aucune évaluation) --
+                            </option>
+
+                            {% for evaluation in evaluations %}
+
+                                <option value="{{ evaluation.id }}">
+
+                                    {{ evaluation.nom or "Évaluation" }}
+
+                                    {% if evaluation.classe_nom %}
+                                        — {{ evaluation.classe_nom }}
+                                    {% endif %}
+
+                                    {% if evaluation.jour_semaine %}
+                                        ({{ evaluation.jour_semaine }} {{ evaluation.heure_debut|heure }}-{{ evaluation.heure_fin|heure }})
+                                    {% endif %}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                        <div class="form-text">
+
+                            <a href="{{ url_for('enseignant.evaluations_matiere', matiere_id=matiere.id) }}">
+                                Gérer les évaluations de cette matière
+                            </a>
+
+                        </div>
 
                     </div>
 
